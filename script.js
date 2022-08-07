@@ -72,22 +72,23 @@ function drawSnake() {
 function clear() {
     snakeboard_ctx.fillStyle = 'white';
     snakeboard_ctx.strokeStyle = "white";
-    snakeboard_ctx.fillRect( 0, 0, snakeboard.width, snakeboard.height);
-    snakeboard_ctx.strokeRect( 0, 0, snakeboard.width, snakeboard.height);
+    snakeboard_ctx.fillRect(0, 0, snakeboard.width, snakeboard.height);
+    snakeboard_ctx.strokeRect(0, 0, snakeboard.width, snakeboard.height);
 }
 
 let dx = 10;
 let dy = 0;
-let score=0;
+let score = 0;
+let head = 0;
 
 function moveSnake() {
-    const head = { x: snake[0].x + dx, y: snake[0].y + dy };
+    head = { x: snake[0].x + dx, y: snake[0].y + dy };
     snake.unshift(head);
     const has_eaten_food = snake[0].x === food_x && snake[0].y === food_y;
-    if (has_eaten_food==true) {
+    if (has_eaten_food == true) {
         getFood();
-        score+=1
-        document.getElementById("score").innerHTML=score
+        score += 1
+        document.getElementById("score").innerHTML = score
     } else {
         snake.pop();
     }
@@ -112,22 +113,34 @@ function drawFood() {
     snakeboard_ctx.fillRect(food_x, food_y, 10, 10);
     snakeboard_ctx.strokeRect(food_x, food_y, 10, 10,);
 }
-
+const text=document.getElementById("alerts");
+const alert_ctx = text.getContext("2d");
 function has_game_ended() {
     for (let i = 0; i < snake.length; i++) {
-        const has_collided = snake[i].x >= 0 && snake[i].x < 400 && snake[i].y >= 0 && snake[i].y < 400
-        if (has_collided == true)
-            return true
-        else {
-            return false
+        const snakeMoving = snake[i].x >= 0 && snake[i].x < 400 && snake[i].y >= 0 && snake[i].y < 400;
+        for (let i = 1; i < snake.length; i++) {
+            let snakePart = snake[i];
+            if (snakePart.x === head.x && snakePart.y === head.y) {
+                return true
+            }
         }
+        if (snakeMoving == true) {
+            return false
+        } else {
+            alert_ctx.font="20px Verdana";;
+            alert_ctx.fillText("Game is Over", 50, 50);
+            return true
+        }
+
+
     }
 }
 
 
+result = false
 function main() {
 
-    if (has_game_ended() == true) {
+    if (result == false) {
 
         setTimeout(() => {
             clear()
@@ -135,9 +148,11 @@ function main() {
             moveSnake();
             drawSnake();
 
+            result = has_game_ended()
             main()
         }, 100);
     }
+
 
 }
 main();
