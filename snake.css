@@ -1,3 +1,20 @@
-#gameCanvas{
-    
+body{
+    display: flex;
+    justify-content: center;
+    background: lightblue;
+
+}
+#gameCanvas {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+}
+#score{
+    height: 10px;
+    color: red;
+    font-weight: 900;
+    position: relative;
+    top: 50px;
 }
