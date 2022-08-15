@@ -113,34 +113,35 @@ function drawFood() {
     snakeboard_ctx.fillRect(food_x, food_y, 10, 10);
     snakeboard_ctx.strokeRect(food_x, food_y, 10, 10,);
 }
-const text=document.getElementById("alerts");
+const text = document.getElementById("alerts");
 const alert_ctx = text.getContext("2d");
+
 function has_game_ended() {
-    for (let i = 0; i < snake.length; i++) {
-        const snakeMoving = snake[i].x >= 0 && snake[i].x < 400 && snake[i].y >= 0 && snake[i].y < 400;
-        for (let i = 1; i < snake.length; i++) {
-            let snakePart = snake[i];
-            if (snakePart.x === head.x && snakePart.y === head.y) {
-                return true
-            }
-        }
-        if (snakeMoving == true) {
-            return false
-        } else {
-            alert_ctx.font="20px Verdana";;
-            alert_ctx.fillText("Game is Over", 50, 50);
+    for (let i = 1; i < snake.length; i++) {
+        let snakePart = snake[i];
+        if (snakePart.x === head.x && snakePart.y === head.y) {
+            alert_ctx.font = "20px Verdana";;
+            alert_ctx.fillText("Game Over", 30, 30);
+            restart()
             return true
         }
-
-
+    }
+    const snakeMoving = head.x >= 0 && head.x < 400 && head.y >= 0 && head.y < 400;
+    if (snakeMoving == true) {
+        return false
+    } else {
+        alert_ctx.font = "20px Verdana";;
+        alert_ctx.fillText("Game Over", 30, 30);
+        restart()
+        return true
     }
 }
 
 
-result = false
+ let=gameOver = false
 function main() {
 
-    if (result == false) {
+    if (gameOver == false) {
 
         setTimeout(() => {
             clear()
@@ -148,13 +149,23 @@ function main() {
             moveSnake();
             drawSnake();
 
-            result = has_game_ended()
+            gameOver = has_game_ended()
             main()
         }, 100);
     }
-
-
 }
+getFood()
 main();
 
-getFood()
+function restart(){
+    snake = [
+        { x: 200, y: 200 },
+        { x: 190, y: 200 },
+        { x: 180, y: 200 },
+        { x: 170, y: 200 },
+        { x: 160, y: 200 },
+    ]
+    dx=10
+    dy=0
+    main();
+}
